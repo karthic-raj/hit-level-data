@@ -39,13 +39,13 @@ Below are the steps to setup AWSCLI in local machine.
  #### Prerequisites
  
 Intsall go 
-    ```sh
+   ```sh
    https://go.dev/doc/install
    ```
 Below are the steps to setup Terraform in local machine
  
  1. Open git bash and clone hashicorp repository
-    ```sh
+   ```sh
    git clone https://github.com/hashicorp/terraform.git
    ```
  2. Navigate to terraform directory
