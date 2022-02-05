@@ -1,0 +1,6 @@
+#Ignore Terraform Plugin folders & State Files
+
+**/.terraform/*
+*.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
