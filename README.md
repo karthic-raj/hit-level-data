@@ -21,14 +21,15 @@ Below is the steps to setup AWSCLI in local machine.
    ```
 6. Run "aws configure" and provide the access key details.
    ```sh
-  c:\Program Files\Amazon\AWSCLIV2> aws configure
-	AWS Access Key ID [None]: xxxxxxxxxxxxxxxxx
-	AWS Secret Access Key [None]: xxxxxxxxx/xxxxxxxxxxx
-	Default region name [None]: us-east-1
-	Default output format [None]: json
+   c:\Program Files\Amazon\AWSCLIV2> aws configure
+   AWS Access Key ID [None]: xxxxxxxxxxxxxxxxx
+   AWS Secret Access Key [None]: xxxxxxxxx/xxxxxxxxxxx
+   Default region name [None]: us-east-1
+   Default output format [None]: json
    ```
 7. Run "aws s3 ls" to view the s3 buckets
    ```sh
    c:\Program Files\Amazon\AWSCLIV2>aws s3 ls
    2022-02-05 11:45:34 aws-us-east-1-test-bucket
    ```
+
