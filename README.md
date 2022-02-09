@@ -80,14 +80,14 @@ Below are the steps to setup Terraform in local machine
  Download terraform folder. 
  
  1. Initialize Terraform
-    ```sh
+   ```sh
    terraform init
    ```
  2. Run plan
-    ```sh
+   ```sh
    terraform plan
    ```
  3. Apply Changes
-    ```sh
+   ```sh
    terraform apply -auto-approve
    ```
