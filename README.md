@@ -73,3 +73,21 @@ Below are the steps to setup Terraform in local machine
 			apply         Create or update infrastructure
 			destroy       Destroy previously-created infrastructure
    ```
+
+ 
+ ### AWS Infrastructure Deployment
+ 
+ Download terraform folder. 
+ 
+ 1. Initialize Terraform
+    ```sh
+   terraform init
+   ```
+ 2. Run plan
+    ```sh
+   terraform plan
+   ```
+ 3. Apply Changes
+    ```sh
+   terraform apply -auto-approve
+   ```
