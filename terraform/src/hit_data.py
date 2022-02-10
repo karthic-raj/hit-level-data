@@ -3,18 +3,18 @@ import json
 import pandas as pd
 from urllib.parse import urlparse
 import re
+import io
 
 s3      = boto3.client('s3')
 bucket  = "aws-us-east-1-test-bucket"
 key     = "hitdata/data.tsv"
+domainoutput  = "hitdata/output/domainoutput.tsv"
+keywordoutput = "hitdata/output/keywordoutput.tsv"
 
 def referrer_data(referrer):
         """
         This function get an URL and returns domain name, query and search term from Search engine.
-        Search term is derived based on regex and currently supports google, yahoo and bing
-
-        :param referrer: Input Url
-        :return: domain_name, query and search_term
+        Search term is derived based on regex
         """
         r = urlparse(referrer)
         search_term = None
@@ -25,6 +25,24 @@ def referrer_data(referrer):
         if s:
             search_term = s[2]
         return domain_name, query, search_term.lower()
+        
+
+def write_dataframe(result_df, output_key):
+        """
+        This function will write a pandas datafram into S3 bucket as a tab delimited file
+        """
+        with io.StringIO() as csv_buffer:
+            result_df.to_csv(csv_buffer, sep="\t")
+            response = s3.put_object(
+                Bucket=bucket, Key=output_key, Body=csv_buffer.getvalue())
+
+        status = response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+        print(status)
+        if status == 200:
+            print(f"Successful S3 put_object response. Status - {status}")
+        else:
+            print(f"Unsuccessful S3 put_object response. Status - {status}")
+            exit(1)
     
 def lambda_handler(event, context):
     
@@ -49,11 +67,13 @@ def lambda_handler(event, context):
     filteredData["Total_Revenue"] = filteredData["Total_Revenue"].astype(int)
     
     #Get Domain, Query & Search Keyword from the referrer link
-    filteredData['Search Engine Domain'], filteredData['search_query'], filteredData['Search Keyword'] = zip(*filteredData['vistit_referral'].map(referrer_data))
+    filteredData['Search_Engine_Domain'], filteredData['search_query'], filteredData['Search_Keyword'] = zip(*filteredData['vistit_referral'].map(referrer_data))
 
-    domainRevenue     = filteredData.groupby(["Search Engine Domain"])["Total_Revenue"].sum()
-    keywordRevenue    = filteredData.groupby(["Search Engine Domain", "Search Keyword"])["Total_Revenue"].sum()
-    print(keywordRevenue)
+    domainRevenue     = filteredData.groupby(["Search_Engine_Domain"])["Total_Revenue"].sum()
+    keywordRevenue    = filteredData.groupby(["Search_Engine_Domain", "Search_Keyword"])["Total_Revenue"].sum()
+    
+    write_dataframe(domainRevenue, domainoutput)
+    write_dataframe(keywordRevenue, keywordoutput)
     
     return {
         'statusCode': 200,
